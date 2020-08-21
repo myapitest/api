@@ -1,0 +1,23 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: 'Invoke-RestMethod -uri "https://zerobug.co/ScanTarget/" -ContentType "application/json; charset=UTF-8"  -Method POST -Headers @{ Authorization = "Basic $([System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($env:$ZEROBUGUID +":"+$env:$ZEROBUGTOKEN)))"} -Body $(@{pit="130";targetid="TaJ3WGM@9OQ7Cc!q3lzM1597982898";ci="Travis CI";tipo="14"}| ConvertTo-Json)'
